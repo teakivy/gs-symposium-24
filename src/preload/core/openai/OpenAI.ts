@@ -3,6 +3,7 @@ import { config } from "dotenv";
 import { User } from "../user/UserTypes";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { addMessage, getUser } from "../user/UserManager";
+import { synthesizeSpeech } from "../texttospeech/GCTextToSpeech";
 
 config();
 
@@ -37,6 +38,8 @@ export async function test(text: string) {
 	if (chatCompletion.choices[0].message.content === null) return;
 	addMessage(user, "assistant", chatCompletion.choices[0].message.content);
 	console.log(chatCompletion.choices[0].message.content);
+
+	synthesizeSpeech(chatCompletion.choices[0].message.content);
 }
 
 export function getMessages(user: User) {
