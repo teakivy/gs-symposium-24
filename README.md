@@ -8,5 +8,5 @@ Using generative AI with facial recognition to enhance the intelligence and pers
 
 ## Details
 
--   Written in JavaScript, using ReactJS, Vite, and Electron
+-   Written in TypeScript, using ReactJS, Vite, and Electron
 -   Using OpenAI API, and Google Cloud API
