@@ -8,6 +8,7 @@ import {
 	addMessage,
 } from "./core/user/UserManager";
 import { test } from "./core/openai/OpenAI";
+import { startRecording, stopRecording } from "./core/audio/AudioRecorder";
 
 // Custom APIs for renderer
 const api = {
@@ -32,6 +33,14 @@ const api = {
 	openai: {
 		test: async (text: string) => {
 			return await test(text);
+		},
+	},
+	audio: {
+		startRecording: () => {
+			startRecording();
+		},
+		stopRecording: () => {
+			stopRecording();
 		},
 	},
 };

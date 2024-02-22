@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 function App() {
 	let [text, setText] = useState("");
+	let [recording, setRecording] = useState(false);
 	return (
 		<>
 			<button
@@ -57,6 +58,21 @@ function App() {
 				value={text}
 				onChange={(e) => setText(e.target.value)}
 			/>
+			<br />
+
+			<button
+				onClick={() => {
+					if (recording === false) {
+						window.api.audio.startRecording();
+						setRecording(true);
+					} else {
+						window.api.audio.stopRecording();
+						setRecording(false);
+					}
+				}}
+			>
+				{recording ? "Stop" : "Start"} Recording
+			</button>
 		</>
 	);
 }

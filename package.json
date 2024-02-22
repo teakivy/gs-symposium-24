@@ -21,10 +21,12 @@
 	"dependencies": {
 		"@electron-toolkit/preload": "^3.0.0",
 		"@electron-toolkit/utils": "^3.0.0",
+		"@google-cloud/speech": "^6.2.0",
 		"@google-cloud/text-to-speech": "^5.1.0",
 		"@vitejs/plugin-react": "^4.2.1",
 		"audio-decode": "^2.2.0",
 		"fs": "^0.0.1-security",
+		"node-record-lpcm16": "^1.0.1",
 		"openai": "^4.28.0",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0",

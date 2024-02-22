@@ -17,6 +17,10 @@ declare global {
 			openai: {
 				test: (text: string) => Promise<void>;
 			};
+			audio: {
+				startRecording: () => void;
+				stopRecording: () => void;
+			};
 		};
 	}
 }

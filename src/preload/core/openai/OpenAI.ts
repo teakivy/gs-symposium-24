@@ -3,7 +3,7 @@ import { config } from "dotenv";
 import { User } from "../user/UserTypes";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { addMessage, getUser } from "../user/UserManager";
-import { synthesizeSpeech } from "../texttospeech/GCTextToSpeech";
+import { synthesizeSpeech } from "../googlecloud/TextToSpeech";
 
 config();
 
