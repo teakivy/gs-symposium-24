@@ -1,6 +1,6 @@
+import { getSystemMessage } from "../settings/System";
 import { User, Message } from "./UserTypes";
 import { v4 as uuidv4 } from "uuid";
-import settings from "../../../settings.json";
 
 let users: User[] = [
 	{
@@ -9,7 +9,7 @@ let users: User[] = [
 		messages: [
 			{
 				id: 0,
-				text: settings.systemMessage,
+				text: getSystemMessage(),
 				userType: "system",
 			},
 		],
@@ -28,7 +28,7 @@ export function createUser(name: string): User {
 	};
 	user.messages.push({
 		id: 0,
-		text: settings.systemMessage,
+		text: getSystemMessage(),
 		userType: "system",
 	});
 	addUser(user);
@@ -62,7 +62,7 @@ export function getUser(id: string): User | undefined {
 			messages: [
 				{
 					id: 0,
-					text: settings.systemMessage,
+					text: getSystemMessage(),
 					userType: "system",
 				},
 			],
