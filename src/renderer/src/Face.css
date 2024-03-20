@@ -1,0 +1,187 @@
+/* .body {
+	width: 350px;
+	height: 350px;
+	background-color: white;
+	border-radius: 20% 20% 50% 50%;
+	box-shadow: 5px 10px 0 0 #cecbcf;
+}
+
+.body-inset {
+	width: 250px;
+	height: 250px;
+	background-color: #e2dee4;
+	border-radius: 10% 10% 50% 50%;
+	box-shadow: 2px 5px 0 0 #c3bfc4;
+	position: relative;
+	top: 50px;
+	left: 50px;
+}
+
+.face {
+	width: 300px;
+	height: 200px;
+	background-color: #f5f5f5;
+	border-radius: 50%;
+	box-shadow: 5px 10px 0 0 #cecbcf;
+	margin-bottom: 20px;
+	margin-left: 25px;
+}
+
+.face-inset {
+	width: 260px;
+	height: 160px;
+	background-color: black;
+	box-shadow: 2px 5px 0 0 rgb(70, 67, 70);
+	border-radius: 50%;
+	top: 20px;
+	margin-left: 20px;
+	position: relative;
+}
+
+.left-eye {
+	width: 30px;
+	height: 40px;
+	background-color: rgb(172, 139, 238);
+	border-radius: 10px;
+	position: relative;
+	top: 50px;
+	left: 50px;
+	float: left;
+	animation: eye-blink infinite 10s linear;
+	animation: eye-look-left infinite 10s linear;
+}
+
+.right-eye {
+	width: 30px;
+	height: 40px;
+	background-color: rgb(172, 139, 238);
+	border-radius: 10px;
+	position: relative;
+	top: 50px;
+	right: 50px;
+	float: right;
+	animation: eye-blink infinite 10s linear;
+	animation: eye-look-right infinite 10s linear;
+}
+
+@keyframes eye-blink {
+	0% {
+		top: 50px;
+		height: 40px;
+	}
+
+	49% {
+		top: 50px;
+		height: 40px;
+	}
+	50% {
+		top: 70px;
+		height: 10px;
+	}
+	51% {
+		top: 50px;
+		height: 40px;
+	}
+	100% {
+		top: 50px;
+		height: 40px;
+	}
+}
+@keyframes eye-look-left {
+	0% {
+		left: 50px;
+	}
+	15% {
+		left: 50px;
+		top: 50px;
+		height: 40px;
+	}
+	16% {
+		height: 10px;
+		top: 70px;
+	}
+	17% {
+		left: 50px;
+		top: 50px;
+		height: 40px;
+	}
+	30% {
+		left: 50px;
+	}
+
+	33% {
+		left: 70px;
+	}
+
+	63% {
+		left: 70px;
+	}
+	66% {
+		left: 30px;
+	}
+	97% {
+		left: 30px;
+	}
+	100% {
+		left: 50px;
+	}
+}
+
+@keyframes eye-look-right {
+	0% {
+		right: 50px;
+	}
+	15% {
+		right: 50px;
+		top: 50px;
+		height: 40px;
+	}
+	16% {
+		height: 10px;
+		top: 70px;
+	}
+	17% {
+		right: 50px;
+		top: 50px;
+		height: 40px;
+	}
+
+	30% {
+		right: 50px;
+	}
+
+	33% {
+		right: 30px;
+	}
+
+	63% {
+		right: 30px;
+	}
+	66% {
+		right: 70px;
+	}
+	97% {
+		right: 70px;
+	}
+	100% {
+		right: 50px;
+	}
+} */
+
+#robodixie {
+	height: 120vh;
+	margin-top: -15vh;
+	/* filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4)); */
+}
+
+#robodixie-u-body {
+	filter: drop-shadow(0px 9px 12px #00000062);
+}
+
+#robodixie-u-head {
+	filter: drop-shadow(3px 5px 2px rgb(0 0 0 / 0.4));
+}
+
+#robodixie-u-eyes {
+	filter: drop-shadow(0px 0px 10px #e9b8f1);
+}

@@ -1,4 +1,4 @@
-import { ElectronAPI } from "@electron-toolkit/preload";
+import { ElectronAPI } from '@electron-toolkit/preload';
 
 declare global {
 	interface Window {
@@ -10,7 +10,7 @@ declare global {
 				createUser: (name: string) => User;
 				addMessage: (
 					user: User,
-					from: "system" | "assistant" | "user",
+					from: 'system' | 'assistant' | 'user',
 					text: string
 				) => void;
 			};
@@ -21,6 +21,8 @@ declare global {
 				startRecording: () => void;
 				stopRecording: () => void;
 			};
+			send: (event: string, args?: any) => void;
+			on: (channel: string, callback: Function) => void;
 		};
 	}
 }

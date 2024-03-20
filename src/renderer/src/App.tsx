@@ -1,80 +1,120 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+import Face, { blink, hover } from './Face';
+import { gsap } from 'gsap';
+import './App.css';
+
+let recording = false;
+window.electron.ipcRenderer.on('audio', (event, arg) => {
+	if (arg.status === 'start') {
+		window.api.audio.startRecording();
+		startListening();
+		recording = true;
+	} else {
+		window.api.audio.stopRecording();
+		stopListening();
+		recording = false;
+	}
+});
+
+window.api.on('message', (event) => {
+	console.log(event);
+	console.log(event.toString().toLowerCase());
+	console.log(event.toString().toLowerCase().includes('purple'));
+	if (event.toString().toLowerCase().includes('purple')) {
+		console.log('purple');
+		for (let i = 0; i < 5; i++) {
+			setTimeout(() => {
+				const tl = gsap.timeline();
+				tl.to('#robodixie-u-head', {
+					rotateZ: 10 * (i % 2 === 0 ? 1 : -1),
+					duration: 0.3,
+					transformOrigin: 'bottom',
+					// fill: 'red',
+				});
+			}, i * 300);
+		}
+
+		setTimeout(() => {
+			const tl = gsap.timeline();
+			tl.to('#robodixie-u-head', {
+				rotateZ: 0,
+				duration: 0.3,
+				transformOrigin: 'bottom',
+				// fill: 'red',
+			});
+		}, 1500);
+	}
+});
+
+export function getRecording() {
+	return recording;
+}
+
+function startListening() {
+	const tl = gsap.timeline();
+	tl.to('#robodixie-u-right-arm', {
+		rotateZ: -150,
+		duration: 0.3,
+		transformOrigin: 'top',
+		// fill: 'red',
+	});
+	const t2 = gsap.timeline();
+	t2.to('#robodixie-u-head', {
+		rotateZ: -10,
+		duration: 0.3,
+		transformOrigin: 'bottom',
+	});
+
+	tl.eventCallback('onComplete', () => {
+		gsap.globalTimeline.pause();
+	});
+}
+
+function stopListening() {
+	gsap.globalTimeline.play();
+
+	const tl = gsap.timeline();
+	tl.to('#robodixie-u-right-arm', {
+		rotateZ: -20,
+		duration: 0.3,
+		transformOrigin: 'top',
+		// fill: 'red',
+	});
+	const t2 = gsap.timeline();
+	t2.to('#robodixie-u-head', {
+		rotateZ: 0,
+		duration: 0.3,
+		transformOrigin: 'bottom',
+	});
+}
 
 function App() {
-	let [text, setText] = useState("");
-	let [recording, setRecording] = useState(false);
+	let [messages, setMessages] = useState([{ text: 'Hello', userType: 'bot' }]);
+
+	window.api.on('message', (message) => {
+		let type = message.split('://')[0];
+		message = message.split('://')[1];
+		setMessages([...messages, { text: message, userType: type }]);
+		console.log(messages);
+	});
 	return (
 		<>
-			<button
-				onClick={() => {
-					window.api.openai.test("Hello!");
-				}}
-			>
-				Test "Hello!"
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					window.api.openai.test("What is the speed limit on I-16?");
-				}}
-			>
-				Test "What is the speed limit on I-16?"
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					window.api.openai.test("Thank you!");
-				}}
-			>
-				Test "Thank you!"
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					window.api.openai.test("What is your favorite color?");
-				}}
-			>
-				Test "What is your favorite color?"
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					window.api.openai.test("Who are you?");
-				}}
-			>
-				Test "Who are you?"
-			</button>
-			<br />
-			<button
-				onClick={() => {
-					window.api.openai.test(text);
-					setText("");
-				}}
-			>
-				<i>Test Custom</i>
-			</button>
-			<input
-				type="text"
-				value={text}
-				onChange={(e) => setText(e.target.value)}
-			/>
-			<br />
-
-			<button
-				onClick={() => {
-					if (recording === false) {
-						window.api.audio.startRecording();
-						setRecording(true);
-					} else {
-						window.api.audio.stopRecording();
-						setRecording(false);
-					}
-				}}
-			>
-				{recording ? "Stop" : "Start"} Recording
-			</button>
+			<Face />
+			<p className='text'>
+				{messages.map((m) => {
+					return m.userType === 'bot' ? (
+						<p className='bot'>Bot: {m.text}</p>
+					) : (
+						<p className='user'>User: {m.text}</p>
+					);
+				})}
+			</p>
 		</>
 	);
 }
+setTimeout(() => {
+	hover();
+	blink();
+}, 2000);
 
 export default App;

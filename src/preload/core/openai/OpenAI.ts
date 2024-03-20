@@ -1,44 +1,46 @@
-import OpenAI from "openai";
-import { config } from "dotenv";
-import { User } from "../user/UserTypes";
-import { ChatCompletionMessageParam } from "openai/resources";
-import { addMessage, getUser } from "../user/UserManager";
-import { synthesizeSpeech } from "../googlecloud/TextToSpeech";
+import OpenAI from 'openai';
+import { config } from 'dotenv';
+import { User } from '../user/UserTypes';
+import { ChatCompletionMessageParam } from 'openai/resources';
+import { addMessage, getUser } from '../user/UserManager';
+import { synthesizeSpeech } from '../googlecloud/TextToSpeech';
+import { ipcRenderer } from 'electron';
+import api from '../../preload';
 
 config();
 
 const openai = new OpenAI({
-	apiKey: process.env["OPENAI_API_KEY"],
+	apiKey: process.env['OPENAI_API_KEY'],
 	dangerouslyAllowBrowser: true,
 });
 
 export async function test(text: string) {
-	let user = getUser("test");
+	api.send('message', 'user://' + text);
+	let user = getUser('test');
 	if (!user) {
 		user = {
-			id: "test",
-			name: "Collin Jones",
+			id: 'test',
+			name: 'Collin Jones',
 			messages: [],
 		};
 	}
 	let messages = getMessages(user);
 	console.log(messages);
-	addMessage(user, "user", text);
+	addMessage(user, 'user', text);
 	const chatCompletion = await openai.chat.completions.create({
 		messages: [
 			...messages,
 			{
-				role: "user",
+				role: 'user',
 				content: text,
 			},
 		],
-		model: "gpt-3.5-turbo",
+		model: 'gpt-3.5-turbo',
 	});
 	if (chatCompletion.choices.length === 0) return;
 	if (chatCompletion.choices[0].message.content === null) return;
-	addMessage(user, "assistant", chatCompletion.choices[0].message.content);
+	addMessage(user, 'assistant', chatCompletion.choices[0].message.content);
 	console.log(chatCompletion.choices[0].message.content);
-
 	synthesizeSpeech(chatCompletion.choices[0].message.content);
 }
 

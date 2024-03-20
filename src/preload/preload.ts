@@ -1,14 +1,14 @@
-import { contextBridge } from "electron";
-import { electronAPI } from "@electron-toolkit/preload";
-import { User } from "./core/user/UserTypes";
+import { contextBridge, ipcRenderer } from 'electron';
+import { electronAPI } from '@electron-toolkit/preload';
+import { User } from './core/user/UserTypes';
 import {
 	addUser,
 	getUser,
 	createUser,
 	addMessage,
-} from "./core/user/UserManager";
-import { test } from "./core/openai/OpenAI";
-import { startRecording, stopRecording } from "./core/audio/AudioRecorder";
+} from './core/user/UserManager';
+import { test } from './core/openai/OpenAI';
+import { startRecording, stopRecording } from './core/audio/AudioRecorder';
 
 // Custom APIs for renderer
 const api = {
@@ -24,7 +24,7 @@ const api = {
 		},
 		addMessage: (
 			user: User,
-			from: "system" | "assistant" | "user",
+			from: 'system' | 'assistant' | 'user',
 			text: string
 		) => {
 			return addMessage(user, from, text);
@@ -43,6 +43,24 @@ const api = {
 			stopRecording();
 		},
 	},
+
+	/**
+	 * Send a message to the renderer process
+	 * @param event Event name
+	 * @param args Arguments
+	 */
+	send: (event: string, args?: any) => {
+		console.log('sending', event, ':', args);
+		ipcRenderer.send(event, args);
+	},
+	/**
+	 * Subscribe to an event
+	 * @param channel Channel to subscribe to
+	 * @param callback Callback to call when the channel is called
+	 */
+	on: (channel: string, callback: Function) => {
+		ipcRenderer.on(channel, (_, data) => callback(data));
+	},
 };
 
 // Use `contextBridge` APIs to expose Electron APIs to
@@ -50,8 +68,8 @@ const api = {
 // just add to the DOM global.
 if (process.contextIsolated) {
 	try {
-		contextBridge.exposeInMainWorld("electron", electronAPI);
-		contextBridge.exposeInMainWorld("api", api);
+		contextBridge.exposeInMainWorld('electron', electronAPI);
+		contextBridge.exposeInMainWorld('api', api);
 	} catch (error) {
 		console.error(error);
 	}
@@ -61,3 +79,5 @@ if (process.contextIsolated) {
 	// @ts-ignore (define in dts)
 	window.api = api;
 }
+
+export default api;
