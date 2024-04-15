@@ -31,5 +31,4 @@ export async function synthesizeSpeech(text: string) {
 	const url = URL.createObjectURL(blob);
 
 	new Audio(url).play();
-	console.log('Audio played');
 }

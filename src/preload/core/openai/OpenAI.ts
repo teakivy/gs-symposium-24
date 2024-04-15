@@ -16,16 +16,14 @@ const openai = new OpenAI({
 
 export async function test(text: string) {
 	api.send('message', 'user://' + text);
-	let user = getUser('test');
+	let user = getUser();
 	if (!user) {
 		user = {
 			id: 'test',
-			name: 'Collin Jones',
 			messages: [],
 		};
 	}
 	let messages = getMessages(user);
-	console.log(messages);
 	addMessage(user, 'user', text);
 	const chatCompletion = await openai.chat.completions.create({
 		messages: [
@@ -40,7 +38,6 @@ export async function test(text: string) {
 	if (chatCompletion.choices.length === 0) return;
 	if (chatCompletion.choices[0].message.content === null) return;
 	addMessage(user, 'assistant', chatCompletion.choices[0].message.content);
-	console.log(chatCompletion.choices[0].message.content);
 	synthesizeSpeech(chatCompletion.choices[0].message.content);
 }
 

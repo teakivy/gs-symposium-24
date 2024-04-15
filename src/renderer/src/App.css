@@ -1,5 +1,66 @@
-.text {
+.message-box {
 	position: absolute;
-	top: 50%;
-	left: 50%;
+	top: 20vh;
+	left: 60vw;
+	width: 25vw;
+	height: 60vh;
+	/* overflow-y: scroll; */
+}
+
+.press-to-record {
+	position: absolute;
+	top: 80vh;
+	left: 60vw;
+	width: 25vw;
+	text-align: center;
+	font-size: 1.5rem;
+}
+
+.bot-message {
+	font-weight: bold;
+	background-color: #e4dfe6;
+	color: #2d0a43;
+	border-radius: 20px 20px 20px 0px;
+	padding: 12px;
+	margin: 10px;
+	float: left;
+	width: fit-content;
+}
+
+.user-message {
+	font-weight: bold;
+	background-color: #2d0a43;
+	color: #e4dfe6;
+	border-radius: 20px 20px 0px 20px;
+	padding: 12px;
+	margin: 10px;
+	float: right;
+	width: fit-content;
+}
+
+.message-container {
+	font-size: 1.2rem;
+	overflow-y: hidden;
+	height: fit-content;
+}
+
+#canvas {
+	display: none;
+	width: 640px;
+	height: 480px;
+}
+
+#photo {
+	display: none;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 640px;
+	height: 480px;
+}
+
+#video {
+	display: none;
+	/* width: 640px;
+	height: 480px; */
 }

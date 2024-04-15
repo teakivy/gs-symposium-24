@@ -17,11 +17,7 @@ window.electron.ipcRenderer.on('audio', (event, arg) => {
 });
 
 window.api.on('message', (event) => {
-	console.log(event);
-	console.log(event.toString().toLowerCase());
-	console.log(event.toString().toLowerCase().includes('purple'));
 	if (event.toString().toLowerCase().includes('purple')) {
-		console.log('purple');
 		for (let i = 0; i < 5; i++) {
 			setTimeout(() => {
 				const tl = gsap.timeline();
@@ -87,28 +83,49 @@ function stopListening() {
 		transformOrigin: 'bottom',
 	});
 }
+window.api.user.load();
 
 function App() {
-	let [messages, setMessages] = useState([{ text: 'Hello', userType: 'bot' }]);
+	let [messages, setMessages] = useState([
+		{ text: 'Hello', userType: 'assistant' },
+	]);
 
-	window.api.on('message', (message) => {
-		let type = message.split('://')[0];
-		message = message.split('://')[1];
-		setMessages([...messages, { text: message, userType: type }]);
-		console.log(messages);
+	window.api.on('message', () => {
+		let user = window.api.user.getUser();
+
+		let messages = user.messages;
+		// get the last 8 messages
+		messages = messages.slice(Math.max(messages.length - 8, 0));
+		// remove system messages
+		messages = messages.filter((m) => m.userType !== 'system');
+		messages = messages.map((m) => {
+			return {
+				text: m.text,
+				userType: m.userType,
+			};
+		});
+		setMessages(messages);
 	});
+
 	return (
 		<>
 			<Face />
-			<p className='text'>
+			<p className='message-box'>
 				{messages.map((m) => {
-					return m.userType === 'bot' ? (
-						<p className='bot'>Bot: {m.text}</p>
+					return m.userType === 'assistant' ? (
+						<div className='message-container'>
+							<p className='bot-message'>{m.text}</p>
+						</div>
 					) : (
-						<p className='user'>User: {m.text}</p>
+						<div className='message-container'>
+							<p className='user-message'>{m.text}</p>
+						</div>
 					);
 				})}
 			</p>
+			<div className='press-to-record'>
+				<p>Press space to start recording</p>
+			</div>
 		</>
 	);
 }

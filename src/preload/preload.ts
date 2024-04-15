@@ -6,9 +6,14 @@ import {
 	getUser,
 	createUser,
 	addMessage,
+	load,
+	save,
+	setupUser,
 } from './core/user/UserManager';
 import { test } from './core/openai/OpenAI';
 import { startRecording, stopRecording } from './core/audio/AudioRecorder';
+import { init, savePhoto } from './core/video/VideoRecorder';
+import { synthesizeSpeech } from './core/googlecloud/TextToSpeech';
 
 // Custom APIs for renderer
 const api = {
@@ -16,11 +21,11 @@ const api = {
 		addUser: (user: User) => {
 			return addUser(user);
 		},
-		getUser: (id: string) => {
-			return getUser(id);
+		getUser: () => {
+			return getUser();
 		},
 		createUser: (name: string) => {
-			return createUser(name);
+			return createUser();
 		},
 		addMessage: (
 			user: User,
@@ -28,6 +33,12 @@ const api = {
 			text: string
 		) => {
 			return addMessage(user, from, text);
+		},
+		load: () => {
+			return load();
+		},
+		setupUser: () => {
+			return setupUser();
 		},
 	},
 	openai: {
@@ -42,6 +53,22 @@ const api = {
 		stopRecording: () => {
 			stopRecording();
 		},
+		speak: (text: string) => {
+			synthesizeSpeech(text);
+		},
+	},
+	video: {
+		init: () => {
+			init();
+		},
+		capture: () => {
+			// capture();
+		},
+	},
+	demo: {
+		savePhoto: (id: number) => {
+			savePhoto(id);
+		},
 	},
 
 	/**
@@ -50,7 +77,6 @@ const api = {
 	 * @param args Arguments
 	 */
 	send: (event: string, args?: any) => {
-		console.log('sending', event, ':', args);
 		ipcRenderer.send(event, args);
 	},
 	/**

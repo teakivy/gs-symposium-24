@@ -22,8 +22,12 @@ function createWindow(): void {
 			webSecurity: false,
 			preload: join(__dirname, '../preload/preload.js'),
 			sandbox: false,
+			backgroundThrottling: false,
 		},
 	});
+
+	const powerSaveBlocker = require('electron').powerSaveBlocker;
+	powerSaveBlocker.start('prevent-app-suspension');
 
 	mWindow = mainWindow;
 	registerListeners();
@@ -57,12 +61,24 @@ function createWindow(): void {
 			recording = false;
 		}
 	});
+
+	let lastSetup = 0;
+	mainWindow.webContents.on('before-input-event', (event, input) => {
+		if (input.type !== 'keyDown') return;
+		if (input.code !== 'Enter') return;
+		if (Date.now() - lastSetup < 1000 * 60) return;
+		lastSetup = Date.now() - 1000;
+		mainWindow.webContents.send('scene', 'setup');
+	});
 }
 
 function registerListeners() {
 	ipcMain.on('message', (_, message) => {
-		console.log('message', message);
 		mWindow?.webContents.send('message', message);
+	});
+
+	ipcMain.on('scene', (_, message) => {
+		mWindow?.webContents.send('scene', message);
 	});
 }
 

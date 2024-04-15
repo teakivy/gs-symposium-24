@@ -1,5 +1,6 @@
-import speech from "@google-cloud/speech";
-import { test } from "../openai/OpenAI";
+import speech from '@google-cloud/speech';
+import { test } from '../openai/OpenAI';
+import api from '../../preload';
 
 export async function transcribeAudio(audio: Blob) {
 	const client = new speech.SpeechClient();
@@ -9,13 +10,13 @@ export async function transcribeAudio(audio: Blob) {
 
 	const request = {
 		audio: {
-			content: Buffer.from(audioBytes).toString("base64"),
+			content: Buffer.from(audioBytes).toString('base64'),
 			// uri: "gs://cloud-samples-data/speech/brooklyn_bridge.raw",
 		},
 		config: {
-			encoding: "WAV",
+			encoding: 'WAV',
 			sampleRateHertz: 48000,
-			languageCode: "en-US",
+			languageCode: 'en-US',
 		},
 	};
 
@@ -23,10 +24,9 @@ export async function transcribeAudio(audio: Blob) {
 	const [response] = await client.recognize(request);
 	const transcription = response.results
 		.map((result) => result.alternatives[0].transcript)
-		.join("\n")
-		.split("\n")
+		.join('\n')
+		.split('\n')
 		.reverse()[0];
-	console.log(transcription);
 
 	test(transcription);
 }
